@@ -19,9 +19,8 @@ and see `spec/README.md` for how the checks in this repo relate to it.
 
 - Keep the dev server running (`pnpm dev`) so you see changes as you make them.
 - Before you push, run `pnpm check`. It runs most of what CI runs --- build,
-  lint, format, and the spec --- so you catch those in seconds instead of
-  waiting for the pipeline. The secrets, deploy, and live-site checks only run
-  in CI.
+  lint, and the spec --- so you catch those in seconds instead of waiting for
+  the pipeline. The secrets, deploy, and live-site checks only run in CI.
 - To see what the page actually looks like rather than what you assume it looks
   like, open it with `agent-browser`. The rendered page is the truth; your
   mental model of it isn't.
@@ -54,8 +53,6 @@ something true about the app that you can't reliably see by looking at it.
   it (any `spec/*.test.ts`). A failure names the contract you haven't met yet.
 - **lint** --- `stylelint` for CSS, `oxlint` for TypeScript. Flags code that's
   wrong, fragile, or non-idiomatic. Read the rule it names.
-- **format** --- `oxfmt` keeps the code consistently formatted. Cosmetic, but it
-  keeps diffs honest.
 - **tests** --- any tests you write must pass. A failing test is a claim about
   the app that's no longer true.
 - **links** --- internal links must resolve **on the live site**: after each
