@@ -91,5 +91,43 @@ jobs:
           else
             echo "no bytes from the SSE endpoint"; exit 1
           fi
+      - name: Verify the deployed app knows it is serving https
+        # Behind Fly's TLS-terminating proxy an app can end up deciding it
+        # serves http://, which makes Astro's CSRF check reject the https
+        # Origin every browser sends — every form POST 403s in production
+        # while working perfectly on localhost. The check runs before
+        # routing, so this probes the origin itself and needs no route to
+        # exist: any status but 403 means the app has its own origin right.
+        run: |
+          code=$(curl -s -o /dev/null -w "%{http_code}" -X POST \
+            -H "Origin: $APP_URL" \
+            -H "Content-Type: application/x-www-form-urlencoded" \
+            --data "probe=1" "$APP_URL/" -m 20 || true)
+          if [ "$code" = "403" ]; then
+            echo "the deployed app rejects same-origin form POSTs (HTTP 403)."
+            echo "it thinks it is serving http, not https, so every form in"
+            echo "your app is broken in production. astro.config.ts needs the"
+            echo "deploy domain in security.allowedDomains."
+            exit 1
+          fi
+          echo "same-origin POST accepted (HTTP $code): the app knows its origin"
+      - name: Verify CSRF protection is still on
+        # The tempting cure for the 403 above is security.checkOrigin: false,
+        # which "fixes" it by letting any site POST to your app. A foreign
+        # Origin must still be refused.
+        run: |
+          code=$(curl -s -o /dev/null -w "%{http_code}" -X POST \
+            -H "Origin: https://cross-site.example.com" \
+            -H "Content-Type: application/x-www-form-urlencoded" \
+            --data "probe=1" "$APP_URL/" -m 20 || true)
+          if [ "$code" = "403" ]; then
+            echo "cross-site POST refused: CSRF protection is on"
+          else
+            echo "a cross-site form POST was NOT refused (HTTP $code) — CSRF"
+            echo "protection looks disabled. Did security.checkOrigin get set"
+            echo "to false, or is / prerendered? Astro skips the check on"
+            echo "prerendered routes."
+            exit 1
+          fi
       - name: Check internal links on the live site
         run: npx --yes linkinator "$APP_URL" --recurse --silent

@@ -117,6 +117,13 @@ contract is:
   `spec/routes.ts`, the list of routes the invariants cover. A swap that forgets
   the route list silently shrinks the invariants to nothing, which is worse than
   failing
+- the deployed app agrees it is serving **https**, and still refuses cross-site
+  form POSTs. Fly terminates TLS at its proxy, so your server sees plain HTTP
+  and has to be told to trust `x-forwarded-proto` (Astro does it with
+  `security.allowedDomains`; every framework spells it differently, and some
+  ship no CSRF check at all). Get this wrong and every form works on localhost
+  and 403s in production --- which is why CI probes it after each deploy rather
+  than leaving you to find out
 
 And commit the updated `pnpm-lock.yaml`: CI installs with `--frozen-lockfile`.
 
