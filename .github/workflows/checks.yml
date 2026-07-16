@@ -48,7 +48,9 @@ jobs:
 
   deploy:
     needs: check
-    if: ${{ !github.event.repository.private && github.ref == 'refs/heads/main' }}
+    # is_template skips the template repo itself, which has no Fly app and no
+    # deploy token — only instantiated student repos deploy.
+    if: ${{ !github.event.repository.private && !github.event.repository.is_template && github.ref == 'refs/heads/main' }}
     runs-on: ubuntu-latest
     timeout-minutes: 10
     permissions:
