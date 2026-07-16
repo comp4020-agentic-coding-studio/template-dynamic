@@ -31,6 +31,9 @@ pnpm build      # produce dist/ (what the Dockerfile runs)
   events (`src/pages/api/events.ts`). It demonstrates the two things the
   full-stack half keeps asking for --- state that survives a reload, and a live
   channel --- and it's yours to replace.
+- `src/lib/schema.ts` + `drizzle/` --- the database schema (Drizzle) and its
+  migrations. Edit the schema, run `pnpm db:generate`, commit the migration; it
+  applies automatically when the server boots, locally and deployed.
 - `spec/` --- what the checks are for (`README.md`), the shipped invariants
   (`invariants.test.ts`, including the accessibility floor), the route list they
   cover (`routes.ts`), and a worked example of spec tests (`guestbook.test.ts`);
@@ -47,9 +50,9 @@ pnpm build      # produce dist/ (what the Dockerfile runs)
   like an API key, so your COMP4020 key can't end up in a public repo. Installed
   automatically by `pnpm install`.
 
-The stack (Astro + better-sqlite3, in TypeScript) is a default, not a rule: the
-deploy is a Docker-image build, so a stack swap lands in the `Dockerfile` and
-the `package.json` scripts while CI and fly.toml stay fixed. See `CLAUDE.md` for
-the exact contract.
+The stack (Astro + SQLite via Drizzle, in TypeScript) is a default, not a rule:
+the deploy is a Docker-image build, so a stack swap lands in the `Dockerfile`
+and the `package.json` scripts while CI and fly.toml stay fixed. See `CLAUDE.md`
+for the exact contract.
 
 See the course site for how the checks map to each week of the course.

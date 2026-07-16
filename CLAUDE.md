@@ -85,6 +85,14 @@ and **one** volume --- that's pinned in fly.toml and the CI deploy
 (`--ha=false`), and the in-process SSE bus in `src/lib/events.ts` depends on it
 --- so don't scale out without rethinking both.
 
+The database is managed with Drizzle: `src/lib/schema.ts` is the ground truth,
+and schema changes travel as migrations. Because the deployed state outlives
+every deploy, "just change the CREATE TABLE" doesn't work --- the flow is edit
+`schema.ts`, run `pnpm db:generate`, and commit the migration it writes to
+`drizzle/`; the server applies pending migrations at boot (the recommended shape
+for SQLite on Fly), so the same commit that changes the code also upgrades the
+live database. Never edit the schema by hand in the database.
+
 The live channel is server-sent events (SSE): `src/pages/api/events.ts` is the
 stream, `src/lib/events.ts` is the in-process bus that feeds it, and the inline
 script in `src/pages/index.astro` is the consuming end. That's the paved path to
@@ -93,11 +101,11 @@ replace everything around it.
 
 ## The stack is swappable
 
-Out of the box this is Astro (server output, node adapter) with better-sqlite3,
-in TypeScript. That's a default, not a rule (unless the week's spec says
-otherwise). You can swap in any stack that serves HTTP, because the deploy is a
-Docker-image build and nothing in CI names a framework --- the whole contract
-is:
+Out of the box this is Astro (server output, node adapter) with SQLite via
+Drizzle, in TypeScript. That's a default, not a rule (unless the week's spec
+says otherwise). You can swap in any stack that serves HTTP, because the deploy
+is a Docker-image build and nothing in CI names a framework --- the whole
+contract is:
 
 - the **fixed artefacts** stay fixed: `.github/workflows/checks.yml`,
   `fly.toml`, and the `Dockerfile`'s role as the deploy artefact. A stack swap
