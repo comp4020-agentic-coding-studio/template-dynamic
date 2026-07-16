@@ -1,0 +1,13 @@
+node_modules/
+dist/
+.astro/
+.DS_Store
+*.log
+
+# the local dev database — state on your machine, never in the repo
+.data/
+
+# keep secrets out of the repo: your API key lives in an env var or an
+# untracked file, never in a tracked one
+.env
+.env.*
