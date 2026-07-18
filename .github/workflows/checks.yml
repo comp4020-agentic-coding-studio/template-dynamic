@@ -67,6 +67,7 @@ jobs:
       APP_URL: https://${{ github.event.repository.name }}.fly.dev
     steps:
       - uses: actions/checkout@v7
+      - uses: pnpm/action-setup@v6 # for the pnpm dlx link check below
       - uses: superfly/flyctl-actions/setup-flyctl@master
       - name: Deploy
         # --remote-only builds the Dockerfile on Fly's builders (CI never runs
@@ -132,4 +133,4 @@ jobs:
             exit 1
           fi
       - name: Check internal links on the live site
-        run: npx --yes linkinator "$APP_URL" --recurse --silent
+        run: pnpm dlx linkinator "$APP_URL" --recurse --silent
