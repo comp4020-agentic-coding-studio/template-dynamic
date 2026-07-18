@@ -6,7 +6,7 @@
 # check entrypoints) is where the swap lands; fly.toml and the CI workflow
 # stay fixed.
 
-ARG NODE_VERSION=22
+ARG NODE_VERSION=24
 FROM node:${NODE_VERSION}-slim AS base
 
 LABEL fly_launch_runtime="Astro"
