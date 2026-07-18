@@ -11,16 +11,19 @@ you) and build your prototype.
 Your repo comes provisioned with a Fly.io app named after the repo and a deploy
 token installed as a repo secret. Once your repo is public, every push to `main`
 runs the checks, deploys, and verifies the live URL --- which is always
-`https://<repo-name>.fly.dev`. You never handle a credential, and you don't need
-a Fly.io account of your own; `flyctl` is only for looking at the running app
-(`flyctl logs -a <repo-name>`, `flyctl status -a <repo-name>`).
+`https://<repo-name>.fly.dev`. You never handle a credential; `flyctl` is only
+for looking at the running app (`flyctl logs -a <repo-name>`,
+`flyctl status -a <repo-name>`). To use it,
+[install flyctl](https://fly.io/docs/flyctl/install/) and `flyctl auth login`
+with the account the course invited into its Fly.io organisation --- see the
+course site's software and platforms page.
 
 ## Quick start
 
 ```sh
 pnpm install
 pnpm dev        # local dev server
-pnpm check      # run the same checks CI runs
+pnpm check      # most of what CI runs (links, secrets and deploy are CI-only)
 pnpm build      # produce dist/ (what the Dockerfile runs)
 ```
 
