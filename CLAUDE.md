@@ -6,7 +6,10 @@ Fly.io. The **deployed app is what gets marked** --- not this repo, and not "it
 works on my machine". It's marked live in Chrome against the deployed URL at two
 viewports --- 1920×1080 (desktop) and 390×844 (phone) --- and both count in
 full, so make that artefact good at both and use the checks below to know
-whether it is.
+whether it is. For the full rubric and what your repo needs to hold, see the
+course site's
+[assessment page](https://comp.anu.edu.au/courses/comp4020-agentic-coding-studio/topics/assessment/)
+rather than reading it back out of this file.
 
 What you're building this week — the spec — is published on the course website,
 and this repo's name tells you which deliverable it is. Run the course plugin's
@@ -20,7 +23,9 @@ and see `spec/README.md` for how the checks in this repo relate to it.
 - Keep the dev server running (`pnpm dev`) so you see changes as you make them.
 - Before you push, run `pnpm check`. It runs most of what CI runs --- build,
   lint, and the spec --- so you catch those in seconds instead of waiting for
-  the pipeline. The secrets, deploy, and live-site checks only run in CI.
+  the pipeline. Run `pnpm check:evidence` too before you ship --- it's the same
+  gate CI runs before deploy, so failing it locally is cheaper than failing it
+  there. The secrets, deploy, and links checks only run in CI.
 - To see what the page actually looks like rather than what you assume it looks
   like, open it with `agent-browser`. The rendered page is the truth; your
   mental model of it isn't.
@@ -55,9 +60,17 @@ something true about the app that you can't reliably see by looking at it.
   wrong, fragile, or non-idiomatic. Read the rule it names.
 - **tests** --- any tests you write must pass. A failing test is a claim about
   the app that's no longer true.
-- **links** --- internal links must resolve **on the live site**: after each
-  deploy, CI crawls the deployed URL. A broken link is a dead end you didn't
-  mean to ship.
+- **evidence** --- `pnpm check:evidence` checks the process-evidence bundle
+  PROCESS.md promises: your commit citations resolve to real commits, a
+  reflection entry exists in `reflections/`, and `CLAUDE.md` is present. It's a
+  separate CI step that gates deploy --- see PROCESS.md and the course site's
+  [assessment page](https://comp.anu.edu.au/courses/comp4020-agentic-coding-studio/topics/assessment/)
+  for what the bundle needs to hold.
+- **links** --- internal links must resolve **on the live site**: it's the
+  deploy job's last step, run against the deployed URL after the deploy itself
+  succeeds. A broken link is a dead end you didn't mean to ship --- and because
+  it only runs post-deploy, a red deploy means this check never ran at all, not
+  that your links are fine.
 - **secrets** --- the repo is scanned for committed credentials. Never put a
   key, token, or password in a tracked file. If one leaks, rotate it. A local
   pre-commit hook (`.githooks/pre-commit`, installed by `pnpm install`) also
@@ -80,7 +93,10 @@ points it at `/data/app.db` on the machine's volume, which is how state survives
 a reload, a machine restart, and a redeploy. There is exactly **one** machine
 and **one** volume --- that's pinned in fly.toml and the CI deploy
 (`--ha=false`), and the in-process SSE bus in `src/lib/events.ts` depends on it
---- so don't scale out without rethinking both.
+--- so don't scale out without rethinking both. You don't create that volume
+yourself: `[mounts]`'s `initial_size` in fly.toml is there so `fly deploy` can
+create the volume on the first deploy that finds none, so it just exists by the
+time the app needs it.
 
 The database is managed with Drizzle: `src/lib/schema.ts` is the ground truth,
 and schema changes travel as migrations. Because the deployed state outlives
