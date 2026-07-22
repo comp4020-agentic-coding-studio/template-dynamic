@@ -39,7 +39,9 @@ guestbook's two contracts — a message survives a reload, and it reaches other
 clients live over the SSE stream — by driving the running app over HTTP.
 Behaviour, not implementation: tests written this way survive a change of
 approach, or of stack. When you replace the guestbook with your own prototype,
-replace this file with tests for your own spec.
+replace this file with tests for your own spec. It's a worked example, not part
+of the shipped suite — delete it once your own spec tests cover its ground; only
+`invariants.test.ts` is the always-on suite you keep.
 
 ## Your spec tests (yours to write)
 
