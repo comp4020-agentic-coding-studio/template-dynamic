@@ -16,15 +16,17 @@ for looking at the running app (`flyctl logs -a <repo-name>`,
 `flyctl status -a <repo-name>`). To use it,
 [install flyctl](https://fly.io/docs/flyctl/install/) and `flyctl auth login`
 with the account the course invited into its Fly.io organisation --- see the
-course site's software and platforms page.
+course site's software and platforms page. (If CI itself is stuck, `fly.toml`'s
+comments document a manual-deploy escape hatch.)
 
 ## Quick start
 
 ```sh
 pnpm install
-pnpm dev        # local dev server
-pnpm check      # most of what CI runs (links, secrets and deploy are CI-only)
-pnpm build      # produce dist/ (what the Dockerfile runs)
+pnpm dev             # local dev server
+pnpm check           # most of what CI runs (links, secrets and deploy are CI-only)
+pnpm check:evidence  # the process-evidence gate CI also runs before deploy
+pnpm build           # produce dist/ (what the Dockerfile runs)
 ```
 
 ## What's here
@@ -38,9 +40,13 @@ pnpm build      # produce dist/ (what the Dockerfile runs)
   migrations. Edit the schema, run `pnpm db:generate`, commit the migration; it
   applies automatically when the server boots, locally and deployed.
 - `spec/` --- what the checks are for (`README.md`), the shipped invariants
-  (`invariants.test.ts`, including the accessibility floor), the route list they
-  cover (`routes.ts`), and a worked example of spec tests (`guestbook.test.ts`);
-  your own spec tests live alongside them.
+  (`invariants.test.ts`), the route list they cover (`routes.ts`), and a worked
+  example of spec tests (`guestbook.test.ts`); your own spec tests live
+  alongside them.
+- An accessibility floor on every SSR page --- `invariants.test.ts` runs
+  axe-core against each route in `routes.ts`. It's a floor, not a clean bill of
+  health (see `spec/README.md`), and it's a check the static template doesn't
+  ship out of the box.
 - `CLAUDE.md` --- orients your coding agent: what the checks mean and how to
   work here. Yours to grow.
 - `PROCESS.md` --- a template for your process overview, showing the
