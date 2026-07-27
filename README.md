@@ -22,12 +22,18 @@ comments document a manual-deploy escape hatch.)
 ## Quick start
 
 ```sh
+mise install       # supported path: install the template's Node and pnpm
 pnpm install
 pnpm dev             # local dev server
 pnpm check           # most of what CI runs (links, secrets and deploy are CI-only)
 pnpm check:evidence  # the process-evidence gate CI also runs before deploy
 pnpm build           # produce dist/ (what the Dockerfile runs)
 ```
+
+`mise` is the course's recommended runtime manager. If you use another manager
+or the official installers, that is fine: provide the Node and pnpm versions in
+`mise.toml`, then run the same commands. Tutor support reproduces runtime
+problems with mise.
 
 ## What's here
 
@@ -36,6 +42,7 @@ pnpm build           # produce dist/ (what the Dockerfile runs)
   events (`src/pages/api/events.ts`). It demonstrates the two things the
   full-stack half keeps asking for --- state that survives a reload, and a live
   channel --- and it's yours to replace.
+- `mise.toml` --- the tested Node and pnpm versions for this template.
 - `src/lib/schema.ts` + `drizzle/` --- the database schema (Drizzle) and its
   migrations. Edit the schema, run `pnpm db:generate`, commit the migration; it
   applies automatically when the server boots, locally and deployed.
