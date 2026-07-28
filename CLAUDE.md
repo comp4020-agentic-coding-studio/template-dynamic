@@ -62,8 +62,9 @@ something true about the app that you can't reliably see by looking at it.
   the app that's no longer true.
 - **evidence** --- `pnpm check:evidence` checks the process-evidence bundle
   PROCESS.md promises: your commit citations resolve to real commits, a
-  reflection entry exists in `reflections/`, and `CLAUDE.md` is present. It's a
-  separate CI step that gates deploy --- see PROCESS.md and the course site's
+  correctly named reflection entry is in `reflections/`, and `CLAUDE.md` is
+  present. It's a separate CI step that gates deploy --- see PROCESS.md and the
+  course site's
   [assessment page](https://comp.anu.edu.au/courses/comp4020-agentic-coding-studio/topics/assessment/)
   for what the bundle needs to hold.
 - **links** --- internal links must resolve **on the live site**: it's the
