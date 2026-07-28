@@ -86,11 +86,5 @@ for (const route of ROUTES) {
       );
       expect(violations).toEqual([]);
     });
-
-    if (route === "/") {
-      it("has the required intro hook", () => {
-        expect(doc.querySelector('[data-testid="intro"]')).toBeTruthy();
-      });
-    }
   });
 }

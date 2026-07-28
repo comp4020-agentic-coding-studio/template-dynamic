@@ -12,13 +12,12 @@ The checks in this directory come in three kinds:
 
 `invariants.test.ts` asserts things that are true of any good web app, however
 you build it and whatever the week's brief asks: a navigation landmark, exactly
-one top-level heading, the marked intro region (`data-testid="intro"`), a
-document language, a real title, a mobile viewport, alt text on images — plus an
-automated **accessibility floor**: axe-core's rule set, run on each page's
-served HTML. They run against the **running** app — `global-setup.ts` boots the
-built server (`dist/server/entry.mjs`, the same artefact production runs) with a
-throwaway database — so they check what actually ships. Keep them green; don't
-delete them.
+one top-level heading, a document language, a real title, a mobile viewport,
+alt text on images — plus an automated **accessibility floor**: axe-core's rule
+set, run on each page's served HTML. They run against the **running** app —
+`global-setup.ts` boots the built server (`dist/server/entry.mjs`, the same
+artefact production runs) with a throwaway database — so they check what
+actually ships. Keep them green; don't delete them.
 
 Two things to know about how they see your app:
 
@@ -34,14 +33,15 @@ Two things to know about how they see your app:
 
 ## A worked example (yours to replace)
 
-`guestbook.test.ts` shows the shape of a spec test: it asserts the demo
+`starter.test.ts` and `guestbook.test.ts` show the shape of spec tests: the
+first checks the starter page's intro hook, while the second asserts the demo
 guestbook's two contracts — a message survives a reload, and it reaches other
 clients live over the SSE stream — by driving the running app over HTTP.
 Behaviour, not implementation: tests written this way survive a change of
 approach, or of stack. When you replace the guestbook with your own prototype,
-replace this file with tests for your own spec. It's a worked example, not part
-of the shipped suite — delete it once your own spec tests cover its ground; only
-`invariants.test.ts` is the always-on suite you keep.
+replace these files with tests for your own spec. They're worked examples, not
+part of the always-on contract — delete them once your own spec tests cover
+their ground; only `invariants.test.ts` is the suite you keep.
 
 ## Your spec tests (yours to write)
 

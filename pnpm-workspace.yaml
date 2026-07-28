@@ -3,3 +3,5 @@
 allowBuilds:
   esbuild: true
   better-sqlite3: true
+minimumReleaseAgeExclude:
+  - '@astrojs/check@0.9.10'

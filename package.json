@@ -7,7 +7,8 @@
     "dev": "astro dev",
     "build": "astro build",
     "preview": "astro preview",
-    "check": "pnpm build && oxlint --ignore-path .gitignore && stylelint \"**/*.css\" --ignore-path .gitignore --allow-empty-input && vitest run",
+    "typecheck": "astro check",
+    "check": "pnpm typecheck && pnpm build && oxlint --ignore-path .gitignore && stylelint \"**/*.css\" --ignore-path .gitignore --allow-empty-input && vitest run",
     "check:evidence": "node scripts/check-evidence.ts",
     "test": "vitest run",
     "db:generate": "drizzle-kit generate"
@@ -19,13 +20,16 @@
     "drizzle-orm": "^0.45.2"
   },
   "devDependencies": {
+    "@astrojs/check": "^0.9.10",
     "@types/better-sqlite3": "^7.6.13",
+    "@types/jsdom": "^28.0.3",
     "axe-core": "^4.12.1",
     "drizzle-kit": "^0.31.10",
     "jsdom": "^29.1.1",
     "oxlint": "^1.75.0",
     "stylelint": "^17.14.1",
     "stylelint-config-standard": "^40.0.0",
+    "typescript": "^6.0.3",
     "vitest": "^4.1.10"
   },
   "packageManager": "pnpm@11.9.0"
