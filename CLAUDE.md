@@ -62,11 +62,10 @@ something true about the app that you can't reliably see by looking at it.
   the app that's no longer true.
 - **evidence** --- `pnpm check:evidence` checks the process-evidence bundle
   PROCESS.md promises: your commit citations resolve to real commits, the exact
-  current reflection named by `.comp4020/deliverable.json` is in
-  `reflections/`, and a working-method file is present
-  (`CLAUDE.md`/`AGENTS.md`, or `WORKING.md` for the no-AI route). The
-  `new-week` course skill refreshes that tracked cache from the public course
-  API. It's a separate CI step that gates deploy --- see PROCESS.md and the course site's
+  current reflection named by `.comp4020/deliverable.json` is in `reflections/`,
+  and your `CLAUDE.md` is present. The `new-week` course skill refreshes that
+  tracked cache from the public course API. It's a separate CI step that gates
+  deploy --- see PROCESS.md and the course site's
   [assessment page](https://comp.anu.edu.au/courses/comp4020-agentic-coding-studio/topics/assessment/)
   for what the bundle needs to hold.
 - **links** --- internal links must resolve **on the live site**: it's the
@@ -171,8 +170,8 @@ means building legibly is part of building well.
   `pnpm check:evidence` checks the exact current name recorded by `new-week`,
   not merely the presence of any well-named file. It answers the two standing
   prompts: what this work changed about the developer you want to be, and the
-  aha moment that moved the work forward. It stays out of the deployed app.
-  It's due at the cutoff, and it's the written half of your crit contribution.
+  aha moment that moved the work forward. It stays out of the deployed app. It's
+  due at the cutoff, and it's the written half of your crit contribution.
 - **This file is process evidence.** The harness you build to direct the agent,
   this `CLAUDE.md` and any `AGENTS.md`, is itself read as part of how you
   worked. Keep it honest and current (see below).
