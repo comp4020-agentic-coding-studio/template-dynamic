@@ -161,11 +161,14 @@ means building legibly is part of building well.
   `pnpm check:evidence` verifies your citations resolve to real commits before
   you ship. Markers follow those citations and don't trawl the repo for evidence
   you didn't cite.
-- **Write your weekly reflection in `reflections/`** --- a short markdown file
-  in this repo, one per week, answering the two standing prompts: what this
-  week's work changed about the developer you want to be, and the aha moment
-  that moved the work forward. It stays out of the deployed app. It's due at the
-  cutoff, and it's the written half of your crit contribution.
+- **Write your reflection in `reflections/`** --- a short markdown file in this
+  repo, named for the deliverable it answers, so the number in the filename is
+  the number in this repo's name (`crit-8.md` for a final-project crit,
+  `final-project.md` at submission); `reflections/README.md` has the full rule.
+  It answers the two standing prompts: what this work changed about the
+  developer you want to be, and the aha moment that moved the work forward. It
+  stays out of the deployed app. It's due at the cutoff, and it's the written
+  half of your crit contribution.
 - **This file is process evidence.** The harness you build to direct the agent,
   this `CLAUDE.md` and any `AGENTS.md`, is itself read as part of how you
   worked. Keep it honest and current (see below).
