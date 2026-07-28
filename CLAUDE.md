@@ -61,11 +61,11 @@ something true about the app that you can't reliably see by looking at it.
 - **tests** --- any tests you write must pass. A failing test is a claim about
   the app that's no longer true.
 - **evidence** --- `pnpm check:evidence` checks the process-evidence bundle
-  PROCESS.md promises: your commit citations resolve to real commits, the exact
-  current reflection named by `.comp4020/deliverable.json` is in `reflections/`,
-  and your `CLAUDE.md` is present. The `new-week` course skill refreshes that
-  tracked cache from the public course API. It's a separate CI step that gates
-  deploy --- see PROCESS.md and the course site's
+  PROCESS.md promises: your commit citations resolve to real commits, the
+  current deliverable's exact reflection is in `reflections/` (worked out from
+  this repo's name against the public course API), and your `CLAUDE.md` is
+  present. It's a separate CI step that gates deploy --- see PROCESS.md and the
+  course site's
   [assessment page](https://comp.anu.edu.au/courses/comp4020-agentic-coding-studio/topics/assessment/)
   for what the bundle needs to hold.
 - **links** --- internal links must resolve **on the live site**: it's the
@@ -167,7 +167,7 @@ means building legibly is part of building well.
   repo, named for the deliverable it answers, so the number in the filename is
   the number in this repo's name (`crit-8.md` for a final-project crit,
   `final-project.md` at submission); `reflections/README.md` has the full rule.
-  `pnpm check:evidence` checks the exact current name recorded by `new-week`,
+  `pnpm check:evidence` checks the exact current name against the course API,
   not merely the presence of any well-named file. It answers the two standing
   prompts: what this work changed about the developer you want to be, and the
   aha moment that moved the work forward. It stays out of the deployed app. It's
