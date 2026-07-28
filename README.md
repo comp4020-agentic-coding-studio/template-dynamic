@@ -2,9 +2,10 @@
 
 A starter template for full-stack prototypes in **COMP4020 / COMP8020 Agentic
 Coding Studio**: server-rendered pages, a SQLite database on a persistent
-volume, and a live-update channel, deployed to Fly.io. Click **Use this
-template** to create your own repo (the course tooling usually does this for
-you) and build your prototype.
+volume, and a live-update channel, deployed to Fly.io. The course provisions a
+repo from this template for each deliverable --- you don't create it yourself (a
+repo you make by hand has no Fly.io app or deploy token). The `new-week` course
+skill clones it for you; from there, build your prototype.
 
 ## Deployment is already wired
 
@@ -48,8 +49,8 @@ problems with mise.
   applies automatically when the server boots, locally and deployed.
 - `spec/` --- what the checks are for (`README.md`), the shipped invariants
   (`invariants.test.ts`), the route list they cover (`routes.ts`), and worked
-  examples of page and behaviour tests (`starter.test.ts`,
-  `guestbook.test.ts`); your own spec tests live alongside them.
+  examples of page and behaviour tests (`starter.test.ts`, `guestbook.test.ts`);
+  your own spec tests live alongside them.
 - An accessibility floor on every SSR page --- `invariants.test.ts` runs
   axe-core against each route in `routes.ts`. It's a floor, not a clean bill of
   health (see `spec/README.md`), and it's a check the static template doesn't
