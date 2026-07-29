@@ -12,9 +12,9 @@ The checks in this directory come in three kinds:
 
 `invariants.test.ts` asserts things that are true of any good web app, however
 you build it and whatever the week's brief asks: a navigation landmark, exactly
-one top-level heading, a document language, a real title, a mobile viewport,
-alt text on images — plus an automated **accessibility floor**: axe-core's rule
-set, run on each page's served HTML. They run against the **running** app —
+one top-level heading, a document language, a real title, a mobile viewport, alt
+text on images — plus an automated **accessibility floor**: axe-core's rule set,
+run on each page's served HTML. They run against the **running** app —
 `global-setup.ts` boots the built server (`dist/server/entry.mjs`, the same
 artefact production runs) with a throwaway database — so they check what
 actually ships. Keep them green; don't delete them.
