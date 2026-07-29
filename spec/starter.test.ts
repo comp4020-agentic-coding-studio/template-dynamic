@@ -10,7 +10,7 @@ describe("starter page", () => {
     const source = await (await fetch(baseUrl)).text();
     expect(
       source,
-      "This described the starter page you've now replaced. Replace it with a test for this week's published spec, or delete it — don't re-add the attribute to make it pass.",
+      "This described the starter page. Replace it with a test for this week's published spec, or delete it — see spec/README.md. Don't re-add the attribute to make it pass.",
     ).toContain('data-testid="intro"');
   });
 });
