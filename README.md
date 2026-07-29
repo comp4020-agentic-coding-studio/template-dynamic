@@ -4,7 +4,7 @@ A starter template for full-stack prototypes in **COMP4020 / COMP8020 Agentic
 Coding Studio**: server-rendered pages, a SQLite database on a persistent
 volume, and a live-update channel, deployed to Fly.io. The course provisions a
 repo from this template for each deliverable --- you don't create it yourself (a
-repo you make by hand has no Fly.io app or deploy token). The `new-week` course
+repo you make by hand has no Fly.io app or deploy token). The `start` course
 skill clones it for you; from there, build your prototype.
 
 ## Deployment is already wired

@@ -4,7 +4,7 @@ import { beforeAll, describe, expect, inject, it } from "vitest";
 // guestbook's two contracts — state survives a reload, and a new message
 // reaches other clients live. When you replace the guestbook with your own
 // prototype, replace this file with tests for YOUR spec (the week's published
-// spec is the source; the new-week skill helps you pull it). Note the shape:
+// spec is the source; the start skill helps you pull it). Note the shape:
 // each test drives the running app over HTTP and asserts behaviour, not
 // implementation — tests like these survive a change of stack.
 const baseUrl = inject("baseUrl");
