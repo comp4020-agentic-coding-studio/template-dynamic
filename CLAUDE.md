@@ -176,7 +176,8 @@ means building legibly is part of building well.
   not merely the presence of any well-named file. It answers the two standing
   prompts: the breakthrough that moved the work forward, and what this work
   changed about the developer you want to be. It stays out of the deployed app.
-  It's due at the cutoff, and it's the written half of your crit contribution.
+  It's due at the cutoff, and if it isn't in the repo by then the week doesn't
+  count as shipped, however good the prototype is.
 - **This file is process evidence.** The harness you build to direct the agent,
   this `CLAUDE.md` and any `AGENTS.md`, is itself read as part of how you
   worked. Keep it honest and current (see below).
