@@ -4,7 +4,8 @@ Every deliverable's spec — what the markers consider when they judge whether
 your work matches what was required — is published on the course website, and
 this repo's name tells you which one applies: the course API maps repo prefixes
 to deliverables, and the `start` course skill walks your agent through pulling
-the right one. Read the spec on the site first; it's the contract.
+the right one. The brief poses the problem; the spec is the fixed contract. Read
+both on the site before you plan or build.
 
 The checks in this directory come in three kinds:
 
@@ -39,9 +40,9 @@ guestbook's two contracts — a message survives a reload, and it reaches other
 clients live over the SSE stream — by driving the running app over HTTP.
 Behaviour, not implementation: tests written this way survive a change of
 approach, or of stack. When you replace the guestbook with your own prototype,
-replace these files with tests for your own spec. They're worked examples, not
-part of the always-on contract — delete them once your own spec tests cover
-their ground; only `invariants.test.ts` is the suite you keep.
+replace these files with tests for this deliverable's spec. They're worked
+examples, not part of the always-on contract — delete them once your spec tests
+cover their ground; only `invariants.test.ts` is the suite you keep.
 
 ## Your spec tests (yours to write)
 

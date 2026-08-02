@@ -50,7 +50,7 @@ problems with mise.
 - `spec/` --- what the checks are for (`README.md`), the shipped invariants
   (`invariants.test.ts`), the route list they cover (`routes.ts`), and worked
   examples of page and behaviour tests (`starter.test.ts`, `guestbook.test.ts`);
-  your own spec tests live alongside them.
+  the spec tests you write live alongside them.
 - An accessibility floor on every SSR page --- `invariants.test.ts` runs
   axe-core against each route in `routes.ts`. It's a floor, not a clean bill of
   health (see `spec/README.md`), and it's a check the static template doesn't

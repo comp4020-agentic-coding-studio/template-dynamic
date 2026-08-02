@@ -11,12 +11,13 @@ course site's
 [assessment page](https://comp.anu.edu.au/courses/comp4020-agentic-coding-studio/topics/assessment/)
 rather than reading it back out of this file.
 
-What you're building this week — the spec — is published on the course website,
-and this repo's name tells you which deliverable it is. Run the course plugin's
+The course website publishes this deliverable's brief and spec. The brief poses
+the problem; the spec is the fixed contract every response must satisfy. This
+repo's name tells you which deliverable applies. Run the course plugin's
 **start** skill at the start of each week: it pulls the right spec from the
 course API, carries your harness forward from last week, and helps you turn the
-spec's checkable lines into tests of your own. Read the spec before you build,
-and see `spec/README.md` for how the checks in this repo relate to it.
+spec's checkable lines into tests of your own. Read the brief and spec before
+you plan or build, and see `spec/README.md` for how the checks relate to them.
 
 ## How to work in here
 
@@ -63,7 +64,7 @@ running counts as not green, so ship with time for CI to finish.
 - **spec** --- `spec/invariants.test.ts` boots the built server and asserts
   what's true of any good web app, whatever the week's brief asks --- including
   an automated accessibility floor (axe-core; see `spec/README.md` for what it
-  can and can't see). The tests you write for the week's own spec run alongside
+  can and can't see). The tests you write for the week's spec run alongside
   it (any `spec/*.test.ts`). A failure names the contract you haven't met yet.
 - **lint** --- `stylelint` for CSS, `oxlint` for TypeScript. Flags code that's
   wrong, fragile, or non-idiomatic. Read the rule it names.
