@@ -55,8 +55,8 @@ problems with mise.
   axe-core against each route in `routes.ts`. It's a floor, not a clean bill of
   health (see `spec/README.md`), and it's a check the static template doesn't
   ship out of the box.
-- `CLAUDE.md` --- orients your coding agent: what the checks mean and how to
-  work here. Yours to grow.
+- `CLAUDE.md` --- orients whoever works in this repo, you or a coding agent:
+  what the checks mean and how to work here. Yours to grow.
 - `PROCESS.md` --- a template for your process overview, showing the
   cited-moment format. Replace it with your own; `pnpm check:evidence` verifies
   your citations resolve.
