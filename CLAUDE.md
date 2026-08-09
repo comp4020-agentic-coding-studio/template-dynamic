@@ -64,8 +64,8 @@ running counts as not green, so ship with time for CI to finish.
 - **spec** --- `spec/invariants.test.ts` boots the built server and asserts
   what's true of any good web app, whatever the week's brief asks --- including
   an automated accessibility floor (axe-core; see `spec/README.md` for what it
-  can and can't see). The tests you write for the week's spec run alongside
-  it (any `spec/*.test.ts`). A failure names the contract you haven't met yet.
+  can and can't see). The tests you write for the week's spec run alongside it
+  (any `spec/*.test.ts`). A failure names the contract you haven't met yet.
 - **lint** --- `stylelint` for CSS, `oxlint` for TypeScript. Flags code that's
   wrong, fragile, or non-idiomatic. Read the rule it names.
 - **tests** --- any tests you write must pass. A failing test is a claim about
