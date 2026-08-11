@@ -82,7 +82,9 @@ running counts as not green, so ship with time for CI to finish.
   deploy job's last step, run against the deployed URL after the deploy itself
   succeeds. A broken link is a dead end you didn't mean to ship --- and because
   it only runs post-deploy, a red deploy means this check never ran at all, not
-  that your links are fine.
+  that your links are fine. Links off your app aren't checked, so that a third
+  party's rate limiter can't decide whether your app ships --- a dead outbound
+  link is yours to catch.
 - **secrets** --- the repo is scanned for committed credentials. Never put a
   key, token, or password in a tracked file. If one leaks, rotate it. A local
   pre-commit hook (`.githooks/pre-commit`, installed by `pnpm install`) also

@@ -151,4 +151,9 @@ jobs:
             exit 1
           fi
       - name: Check internal links on the live site
-        run: pnpm dlx linkinator "$APP_URL" --recurse --silent
+        # Internal links only. linkinator checks outbound links by default, so
+        # someone else's rate limiter or outage would redden a deploy with
+        # nothing wrong in it. The skip is anchored to this app's own origin
+        # rather than naming localhost: the crawl root here is the live URL, and
+        # a pattern that matched it would pass having scanned zero links.
+        run: pnpm dlx linkinator "$APP_URL" --recurse --silent --skip "^(?!$APP_URL)"
