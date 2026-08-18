@@ -22,11 +22,11 @@ you plan or build, and see `spec/README.md` for how the checks relate to them.
 ## How to work in here
 
 - Keep the dev server running (`pnpm dev`) so you see changes as you make them.
-- Before you push, run `pnpm check`. It runs most of what CI runs --- build,
-  lint, and the spec --- so you catch those in seconds instead of waiting for
-  the pipeline. Run `pnpm check:evidence` too before you ship --- it's the same
-  gate CI runs before deploy, so failing it locally is cheaper than failing it
-  there. The secrets, deploy, and links checks only run in CI.
+- Before you push, run `pnpm check`. It runs most of what CI runs --- the types,
+  the build, and the spec --- so you catch those in seconds instead of waiting
+  for the pipeline. Run `pnpm check:evidence` too before you ship --- it's the
+  same gate CI runs before deploy, so failing it locally is cheaper than failing
+  it there. The secrets, deploy, and links checks only run in CI.
 - To see what the page actually looks like rather than what you assume it looks
   like, open it with `agent-browser`. The rendered page is the truth; your
   mental model of it isn't.
@@ -66,16 +66,13 @@ running counts as not green, so ship with time for CI to finish.
   an automated accessibility floor (axe-core; see `spec/README.md` for what it
   can and can't see). The tests you write for the week's spec run alongside it
   (any `spec/*.test.ts`). A failure names the contract you haven't met yet.
-- **lint** --- `stylelint` for CSS, `oxlint` for TypeScript. Flags code that's
-  wrong, fragile, or non-idiomatic. Read the rule it names.
 - **tests** --- any tests you write must pass. A failing test is a claim about
   the app that's no longer true.
 - **evidence** --- `pnpm check:evidence` checks the process-evidence bundle
-  PROCESS.md promises: your commit citations resolve to real commits, the
-  current deliverable's exact reflection is in `reflections/` (worked out from
-  this repo's name against the public course API), and your `CLAUDE.md` is
-  present. It's a separate CI step that gates deploy --- see PROCESS.md and the
-  course site's
+  PROCESS.md promises: your commit citations resolve to real commits, a
+  reflection named for this repo's deliverable is in `reflections/` (worked out
+  from the repo's name alone, offline), and your `CLAUDE.md` is present. It's a
+  separate CI step that gates deploy --- see PROCESS.md and the course site's
   [assessment page](https://comp.anu.edu.au/courses/comp4020-agentic-coding-studio/topics/assessment/)
   for what the bundle needs to hold.
 - **links** --- internal links must resolve **on the live site**: it's the
@@ -179,12 +176,12 @@ means building legibly is part of building well.
   repo, named for the deliverable it answers, so the number in the filename is
   the number in this repo's name (`crit-8.md` for a final-project crit,
   `final-project.md` at submission); `reflections/README.md` has the full rule.
-  `pnpm check:evidence` checks the exact current name against the course API,
-  not merely the presence of any well-named file. It answers the two standing
-  prompts: the breakthrough that moved the work forward, and what this work
-  changed about the developer you want to be. It stays out of the deployed app.
-  It's due at the cutoff, and if it isn't in the repo by then the week doesn't
-  count as shipped, however good the prototype is.
+  `pnpm check:evidence` checks a name the marker reads is present, derived from
+  this repo's name. It answers the two standing prompts: the breakthrough that
+  moved the work forward, and what this work changed about the developer you
+  want to be. It stays out of the deployed app. It's due at the cutoff, and if
+  it isn't in the repo by then the week doesn't count as shipped, however good
+  the prototype is.
 - **This file is process evidence.** The harness you build to direct the work,
   this `CLAUDE.md` and any `AGENTS.md`, is itself read as part of how you
   worked. Keep it honest and current (see below).
@@ -200,3 +197,8 @@ catching you out, a fact about the stack that's easy to get wrong --- write it
 down here. Growing this file is the work of harness engineering, and the gap
 between this boilerplate and your own version is part of what your prototype
 says about the developer you're becoming.
+
+The template ships no linter, on purpose. When the code keeps needing the same
+correction, that's your cue to add one (oxlint for TS, stylelint for CSS) and
+wire it into `check` --- a sensor you added because you needed it is worth more
+than one you inherited.
