@@ -197,8 +197,3 @@ catching you out, a fact about the stack that's easy to get wrong --- write it
 down here. Growing this file is the work of harness engineering, and the gap
 between this boilerplate and your own version is part of what your prototype
 says about the developer you're becoming.
-
-The template ships no linter, on purpose. When the code keeps needing the same
-correction, that's your cue to add one (oxlint for TS, stylelint for CSS) and
-wire it into `check` --- a sensor you added because you needed it is worth more
-than one you inherited.
