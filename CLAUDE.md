@@ -9,25 +9,6 @@ The
 publishes this deliverable's brief and spec, and this repo's name tells you
 which deliverable applies. Read both before you plan or build.
 
-## How to work in here
-
-- Keep the dev server running (`pnpm dev`) so you see changes as you make them.
-- Run `pnpm check` before you push.
-- Open the page in a browser and look at it. The rendered page is the truth;
-  your mental model of it isn't.
-- When a check fails, read its output before you change anything.
-- Never commit a red state.
-
-## The checks
-
-`pnpm check` runs them (`pnpm check:evidence` is the extra gate before you
-ship); CI runs the same plus secrets, then after each deploy probes the live
-app: online, the SSE stream streaming, https and CSRF sane, internal links
-resolving. Read the failure.
-
-`spec/README.md`, `PROCESS.md` and `reflections/README.md` are in this repo and
-say what they are for.
-
 ## Where your data lives
 
 The app's whole persistent state is one SQLite file: locally `.data/app.db`
@@ -76,15 +57,19 @@ contract is:
 
 And commit the updated `pnpm-lock.yaml`: CI installs with `--frozen-lockfile`.
 
+## The checks
+
+`pnpm check` runs them, and `pnpm check:evidence` is the extra gate before you
+ship. CI runs the same plus secrets, then after each deploy probes the live app:
+online, the SSE stream streaming, https and CSRF sane, internal links resolving.
+
+`spec/README.md`, `PROCESS.md` and `reflections/README.md` are in this repo and
+say what they are for.
+
 ## This file is yours
 
-A starting point, not a rulebook. As you learn what your prototype needs --- a
-convention the work has to hold to, a sensor that keeps catching you out, a fact
-about the stack that is easy to get wrong --- write it down here and wire it
-into `check`. Growing this file is the work.
-
-This file and the sensors you wire into `check` are your harness, and they carry
-across the course: both come with you into next week's repo, including whatever
-you brought up from the static half. The prototype doesn't --- source, and the
-tests answering this week's published spec, stay behind. `spec/README.md` draws
-the line.
+A starting point, not a rulebook: what you add to it is the harness, and the
+harness is assessed. This file and the sensors you wire into `check` carry
+across the course --- both come with you into next week's repo. The prototype
+doesn't: source, and the tests answering this week's published spec, stay
+behind. `spec/README.md` draws the line.
