@@ -48,15 +48,14 @@ problems with mise.
   migrations. Edit the schema, run `pnpm db:generate`, commit the migration; it
   applies automatically when the server boots, locally and deployed.
 - `spec/` --- what the checks are for (`README.md`), the shipped invariants
-  (`invariants.test.ts`), the route list they cover (`routes.ts`), and worked
-  examples of page and behaviour tests (`starter.test.ts`, `guestbook.test.ts`);
-  the spec tests you write live alongside them.
+  (`invariants.test.ts`), the route list they cover (`routes.ts`), and the
+  starter's plumbing check (`guestbook.test.ts`); the spec tests you write live
+  alongside them.
 - An accessibility floor on every SSR page --- `invariants.test.ts` runs
   axe-core against each route in `routes.ts`. It's a floor, not a clean bill of
-  health (see `spec/README.md`), and it's a check the static template doesn't
-  ship out of the box.
-- `CLAUDE.md` --- orients whoever works in this repo, you or a coding agent:
-  what the checks mean and how to work here. Yours to grow.
+  health; `spec/README.md` says what it can't see.
+- `CLAUDE.md` --- orients whoever works in this repo, you or a coding agent.
+  Yours to grow.
 - `PROCESS.md` --- a template for your process overview, showing the
   cited-moment format. Replace it with your own; `pnpm check:evidence` verifies
   your citations resolve.

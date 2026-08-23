@@ -1,12 +1,10 @@
 import { beforeAll, describe, expect, inject, it } from "vitest";
 
-// A worked example of turning a spec line into a test: these assert the demo
-// guestbook's two contracts — state survives a reload, and a new message
-// reaches other clients live. When you replace the guestbook with your own
-// prototype, replace this file with tests for YOUR spec (the week's published
-// spec is the source; the start skill helps you pull it). Note the shape:
-// each test drives the running app over HTTP and asserts behaviour, not
-// implementation — tests like these survive a change of stack.
+// The supplied starter's plumbing check: it drives the running app over HTTP
+// to prove the guestbook's two platform claims hold in THIS repo — a message
+// survives a reload, and a new one reaches other clients over the SSE stream.
+// A red run on a fresh clone means the platform is broken, not your work. It
+// describes the starter, so delete it when you replace the starter.
 const baseUrl = inject("baseUrl");
 
 describe("guestbook", () => {

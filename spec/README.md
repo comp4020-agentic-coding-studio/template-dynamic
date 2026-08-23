@@ -28,29 +28,24 @@ Two things to know about how they see your app:
   covering it.
 - **The axe pass runs without a browser** (in jsdom), which keeps CI fast and
   dependency-light but means rules needing real rendering — colour contrast,
-  element overlap — are disabled. It's a floor, not a clean bill of health:
-  wiring up fuller accessibility testing (axe in a real browser, or
-  `agent-browser` against the live page) is your work when the spec asks for it.
+  element overlap — are disabled. It's a floor, not a clean bill of health.
 
-## A worked example (yours to replace)
+## The starter's plumbing (shipped, retires with the starter)
 
-`starter.test.ts` and `guestbook.test.ts` show the shape of spec tests: the
-first checks the starter page's intro hook, while the second asserts the demo
-guestbook's two contracts — a message survives a reload, and it reaches other
-clients live over the SSE stream — by driving the running app over HTTP.
-Behaviour, not implementation: tests written this way survive a change of
-approach, or of stack. When you replace the guestbook with your own prototype,
-replace these files with tests for this deliverable's spec. They're worked
-examples, not part of the always-on contract — delete them once your spec tests
-cover their ground; only `invariants.test.ts` is the suite you keep.
+`guestbook.test.ts` drives the running app over HTTP to prove the supplied
+plumbing works in this repo: a message survives a reload, and a new one reaches
+other clients over the SSE stream. A red run on a fresh clone means the platform
+is broken, not your work. It describes the starter, so it goes when the starter
+does.
 
 ## Your spec tests (yours to write)
 
 Turning the week's published spec into tests is your work, not the template's.
 Some spec lines are mechanically checkable — assert those here, in your own test
-file alongside the invariants (any `spec/*.test.ts` runs with `pnpm check`).
-Some lines only a person can judge; leave those to the crit. Write tests for the
-**contracts** — what the app must do, not how you built it — so the tests
+file alongside the supplied ones (any `spec/*.test.ts` runs with `pnpm check`).
+Some lines only a person can judge; leave those to the crit. There is no minimum
+count: select the checks that protect your work's real promises, and test the
+**contracts** — what the page must do, not how you built it — so the tests
 survive a change of approach, or of stack.
 
 Two kinds end up in here, and they have different lifespans:
@@ -59,15 +54,13 @@ Two kinds end up in here, and they have different lifespans:
   brief they answer, so they stay behind when the week does.
 - **sensors** assert a standard you hold the agent to whatever the brief is. A
   sensor is harness, the same as a rule in `CLAUDE.md`, so it comes with you
-  into next week's repo — including the ones you brought over from the static
-  half, wherever they still apply. Catching a recurring failure once and wiring
-  it into `check` is the skilled move; re-prompting until it passes is the
-  routine one.
+  into next week's repo. Catching a recurring failure once and wiring it into
+  `check` is the skilled move; re-prompting until it passes is the routine one.
 
 By the end of semester the sensors you've accumulated are the clearest record
 you have of what you've taught yourself to check for — worth citing in
 `PROCESS.md` the week each one lands.
 
-A green suite here is backpressure, not a mark: your tutor verifies the live app
-against the published spec at the crit, and keeping your own tests green is how
-you arrive with no surprises.
+A green suite here is backpressure, not a mark: your tutor verifies what you
+deployed against the published spec at the crit, and keeping your own tests
+green is how you arrive with no surprises.
