@@ -31,10 +31,8 @@ pnpm check:evidence  # the process-evidence gate CI also runs before deploy
 pnpm build           # produce dist/ (what the Dockerfile runs)
 ```
 
-`mise` is the course's recommended runtime manager. If you use another manager
-or the official installers, that is fine: provide the Node and pnpm versions in
-`mise.toml`, then run the same commands. Tutor support reproduces runtime
-problems with mise.
+`mise` is what tutor support reproduces runtime problems with; any other manager
+is fine if you match the Node and pnpm versions in `mise.toml`.
 
 ## What's here
 
@@ -43,32 +41,21 @@ problems with mise.
   events (`src/pages/api/events.ts`). It demonstrates the two things the
   full-stack half keeps asking for --- state that survives a reload, and a live
   channel --- and it's yours to replace.
-- `mise.toml` --- the tested Node and pnpm versions for this template.
 - `src/lib/schema.ts` + `drizzle/` --- the database schema (Drizzle) and its
-  migrations. Edit the schema, run `pnpm db:generate`, commit the migration; it
-  applies automatically when the server boots, locally and deployed.
-- `spec/` --- what the checks are for (`README.md`), the shipped invariants
-  (`invariants.test.ts`), the route list they cover (`routes.ts`), and the
-  starter's plumbing check (`guestbook.test.ts`); the spec tests you write live
-  alongside them.
-- An accessibility floor on every SSR page --- `invariants.test.ts` runs
-  axe-core against each route in `routes.ts`. It's a floor, not a clean bill of
-  health; `spec/README.md` says what it can't see.
-- `CLAUDE.md` --- orients whoever works in this repo, you or a coding agent.
-  Yours to grow.
-- `PROCESS.md` --- a template for your process overview, showing the
-  cited-moment format. Replace it with your own; `pnpm check:evidence` verifies
-  your citations resolve.
+  migrations.
+- `spec/` --- the shipped invariants (`invariants.test.ts`), the route list they
+  cover (`routes.ts`), and the starter's plumbing check (`guestbook.test.ts`);
+  the spec tests you write live alongside them.
 - `.github/workflows/checks.yml`, `fly.toml`, `Dockerfile` --- the fixed deploy
   artefacts: the CI sensors and deploy, the pinned Fly.io resources, and the
   image the app ships as.
 - `.githooks/pre-commit` --- blocks any commit that contains something shaped
   like an API key, so your COMP4020 key can't end up in a public repo. Installed
   automatically by `pnpm install`.
+- `CLAUDE.md`, `PROCESS.md`, `spec/README.md` and `reflections/README.md` ---
+  each says what it is for, and each is yours to replace or grow.
 
-The stack (Astro + SQLite via Drizzle, in TypeScript) is a default, not a rule:
-the deploy is a Docker-image build, so a stack swap lands in the `Dockerfile`
-and the `package.json` scripts while CI and fly.toml stay fixed. See `CLAUDE.md`
-for the exact contract.
+The stack (Astro + SQLite via Drizzle, in TypeScript) is a default, not a rule.
+`CLAUDE.md` has the exact contract a swap has to keep.
 
 See the course site for how the checks map to each week of the course.
