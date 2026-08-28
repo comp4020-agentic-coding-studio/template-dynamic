@@ -25,10 +25,7 @@ describe("guestbook", () => {
     });
 
   it("accepts a message and redirects back to the page", async () => {
-    const res = await post(
-      "/api/messages",
-      new URLSearchParams({ body: message }),
-    );
+    const res = await post("/api/messages", new URLSearchParams({ body: message }));
     expect(res.status).toBe(303);
     expect(res.headers.get("location")).toBe("/");
   });
