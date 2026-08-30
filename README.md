@@ -121,10 +121,4 @@ And commit the updated `pnpm-lock.yaml`: CI installs with `--frozen-lockfile`.
 ship. CI runs the same plus secrets, then after each deploy probes the live app:
 online, the SSE stream streaming, https and CSRF sane, internal links resolving.
 
-## What carries forward
-
-Your `CLAUDE.md` and the sensors you wire into `check` come with you into next
-week's repo. The prototype doesn't: source, and the tests answering this week's
-published spec, stay behind. `spec/README.md` draws the line.
-
 See the course site for how the checks map to each week of the course.
