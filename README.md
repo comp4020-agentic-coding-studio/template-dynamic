@@ -24,13 +24,13 @@ is what gets marked, not this repo.
 Your repo comes provisioned with a Fly.io app named after the repo and a deploy
 token installed as a repo secret. Once your repo is public, every push to `main`
 runs the checks, deploys, and verifies the live URL --- which is always
-`https://<repo-name>.fly.dev`. You never handle a credential; `flyctl` is only
-for looking at the running app (`flyctl logs -a <repo-name>`,
+`https://<repo-name>.fly.dev`. You never handle the deploy credential; `flyctl`
+is for looking at the running app (`flyctl logs -a <repo-name>`,
 `flyctl status -a <repo-name>`). To use it,
-[install flyctl](https://fly.io/docs/flyctl/install/) and `flyctl auth login`
-with the account the course invited into its Fly.io organisation --- see the
-course site's software and platforms page. (If CI itself is stuck, `fly.toml`'s
-comments document a manual-deploy escape hatch.)
+[install flyctl](https://fly.io/docs/flyctl/install/) and put the token the
+course sent you for this app in your shell as `FLY_API_TOKEN` --- no Fly.io
+account needed; see the course site's software and platforms page. (If CI itself
+is stuck, `fly.toml`'s comments document a manual-deploy escape hatch.)
 
 ## Quick start
 
