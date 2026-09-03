@@ -86,7 +86,8 @@ jobs:
     steps:
       - uses: actions/checkout@v7
       - uses: pnpm/action-setup@v6 # for the pnpm dlx link check below
-      - uses: superfly/flyctl-actions/setup-flyctl@master
+      # Pinned like the scanner below: this runs in every repo in the course.
+      - uses: superfly/flyctl-actions/setup-flyctl@fc53c09e1bc3be6f54706524e3b82c4f462f77be # 1.5
       - name: Deploy
         # --remote-only builds the Dockerfile on Fly's builders (CI never runs
         # Docker); --ha=false keeps the app at exactly one machine and one
