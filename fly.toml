@@ -1,11 +1,6 @@
-# Deploy config for the course-managed Fly.io setup. The resource defaults
-# below are pinned — the course spend watchdog assumes them — so leave [[vm]],
-# [mounts], and the auto-stop settings alone.
-#
-# There's deliberately no `app` line: the app name is pinned to this repo's
-# name, and CI passes it with -a. (Deploying by hand — the escape hatch, CI
-# deploys on every push to main once the repo is public — means
-# `flyctl deploy --remote-only --ha=false -a <your-repo-name>`.)
+# Deploy config for the course-managed Fly.io setup. The machine, volume and
+# auto-stop settings are the shape the course watches — leave them as they are.
+# There's no `app` line: the app is named after this repo, and CI passes it.
 
 primary_region = "syd"
 

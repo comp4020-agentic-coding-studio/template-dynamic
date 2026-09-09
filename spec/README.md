@@ -35,8 +35,7 @@ Two things to know about how they see your app:
 `readme.test.ts` holds one promise of the deployed app: `/readme/` serves the
 whole of `README.md`, your account of what the app is and what good looks like
 here. It renders the markdown to text and asks whether the served page contains
-all of it, so styling and navigation around it pass and a trimmed copy fails. A
-stack swap has to keep the route; this check is how you know it did.
+all of it, so styling and navigation around it pass and a trimmed copy fails.
 
 ## The starter's plumbing (shipped, retires with the starter)
 
@@ -54,7 +53,7 @@ file alongside the supplied ones (any `spec/*.test.ts` runs with `pnpm check`).
 Some lines only a person can judge; leave those to the crit. There is no minimum
 count: select the checks that protect your work's real promises, and test the
 **contracts** — what the page must do, not how you built it — so the tests
-survive a change of approach, or of stack.
+survive a change of approach.
 
 A green suite here is backpressure, not a mark: your tutor verifies what you
 deployed against the published spec at the crit, and keeping your own tests

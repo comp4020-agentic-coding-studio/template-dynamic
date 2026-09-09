@@ -8,9 +8,9 @@
     "build": "astro build",
     "preview": "astro preview",
     "typecheck": "astro check",
-    "check": "pnpm typecheck && pnpm build && vitest run",
+    "check": "pnpm typecheck && pnpm test",
     "check:evidence": "node scripts/check-evidence.ts",
-    "test": "vitest run",
+    "test": "astro build && vitest run",
     "db:generate": "drizzle-kit generate"
   },
   "dependencies": {

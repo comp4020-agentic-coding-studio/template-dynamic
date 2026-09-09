@@ -1,10 +1,7 @@
 # syntax = docker/dockerfile:1
 
-# The deploy artefact: Fly builds this image on its remote builders and runs
-# it as the app. Its shape is what `fly launch` scaffolds for an Astro
-# node-adapter app — if you swap the stack, this file (plus the package.json
-# check entrypoints) is where the swap lands; fly.toml and the CI workflow
-# stay fixed.
+# The image Fly builds and runs: install, build, then keep only the built
+# server and its production dependencies.
 
 ARG NODE_VERSION=24
 FROM node:${NODE_VERSION}-slim AS base

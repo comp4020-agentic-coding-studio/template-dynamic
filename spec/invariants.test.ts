@@ -6,7 +6,7 @@ import { ROUTES } from "./routes";
 // The invariants run against the RUNNING app — spec/global-setup.ts boots the
 // built server (dist/server/entry.mjs, the same artefact production runs) and
 // these tests fetch each route over HTTP. So they check what actually ships,
-// not the source. Run `pnpm build` first (the `check` script does).
+// not the source; `pnpm test` builds first.
 //
 // These hold for any good website, whatever the week's brief asks — the
 // week-specific contracts live in your own spec/*.test.ts alongside this

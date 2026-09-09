@@ -3,13 +3,9 @@ import { JSDOM } from "jsdom";
 import { readFileSync } from "node:fs";
 import { describe, expect, inject, it } from "vitest";
 
-// README.md is your account of what this app is and what good looks like
-// here, and the deployed app publishes it in full at /readme/ so a visitor
-// reads it without leaving the site. This check holds that promise whatever
-// the stack: it renders README.md to text and asserts the served page contains
-// all of it. Styling, navigation and a footer around it all pass; a trimmed or
-// paraphrased copy fails. Shipped and always on — keep it green, and keep the
-// route in spec/routes.ts so the invariants cover the page too.
+// The deployed app publishes README.md in full at /readme/. This renders
+// README.md to text and asserts the served page contains all of it: styling,
+// navigation and a footer around it pass; a trimmed or paraphrased copy fails.
 const baseUrl = inject("baseUrl");
 
 const text = (html: string): string => new JSDOM(html).window.document.body.textContent ?? "";

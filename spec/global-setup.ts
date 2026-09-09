@@ -17,7 +17,7 @@ declare module "vitest" {
 export default async function setup(project: TestProject): Promise<() => void> {
   const entry = "./dist/server/entry.mjs";
   if (!existsSync(entry)) {
-    throw new Error(`${entry} not found — run \`pnpm build\` first (\`pnpm check\` does)`);
+    throw new Error(`${entry} not found — run \`pnpm test\`, which builds first`);
   }
 
   const port = await new Promise<number>((resolve) => {

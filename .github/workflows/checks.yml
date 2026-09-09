@@ -4,8 +4,8 @@ on:
   push:
     branches: [main]
   pull_request:
-  # /ship dispatches a run after flipping the repo public, since the
-  # visibility flip itself triggers no push event.
+  # /ship dispatches a run after flipping the repo public, since the flip
+  # itself triggers no push event.
   workflow_dispatch:
 
 # One deploy at a time, and never cancel one mid-flight.
@@ -15,10 +15,8 @@ concurrency:
 
 jobs:
   check:
-    # Jobs only run once the repo is public: private-phase pushes would drain
-    # the org's shared free Actions pool, and `pnpm check` runs the same
-    # sensors locally while you build (public repos get unlimited minutes, so
-    # cost ends at the flip).
+    # Runs once the repo is public; until then `pnpm check` is the same
+    # sensors, locally.
     if: ${{ !github.event.repository.private }}
     runs-on: ubuntu-latest
     timeout-minutes: 10
@@ -42,20 +40,15 @@ jobs:
         if: ${{ !github.event.repository.is_template }}
         run: pnpm check:evidence
       - name: Scan for committed secrets
-        # Pinned, both halves: the SHA fixes the action's script, and `version`
-        # fixes the scanner image, which otherwise floats on :latest. These two
-        # steps run in every repo in the course, so an upstream change would
-        # break the whole cohort's CI in the same hour. Bump between semesters.
+        # Pinned in both halves (action SHA and scanner image) because this
+        # runs in every repo in the course. Bump between semesters.
         uses: trufflesecurity/trufflehog@6f3c981e7b77f235fd2702dd74af25fc4b72bf11 # v3.96.0
         with:
           version: "3.96.0"
           extra_args: --only-verified
       - name: Scan for a committed course key
-        # The scan above reports only secrets it can confirm are live, and a
-        # course key has no verifier a runner can reach --- see
-        # .github/trufflehog.yml, which matches its shape instead.
-        # CustomRegex scopes this pass to that file's detector, so the built-in
-        # ones don't add unverified noise on top of it.
+        # A course key has no verifier a runner can reach, so this pass
+        # matches its shape instead (.github/trufflehog.yml).
         uses: trufflesecurity/trufflehog@6f3c981e7b77f235fd2702dd74af25fc4b72bf11 # v3.96.0
         with:
           version: "3.96.0"
@@ -66,17 +59,14 @@ jobs:
 
   deploy:
     needs: check
-    # is_template skips the template repo itself, which has no Fly app and no
-    # deploy token — only instantiated student repos deploy.
+    # The template repo itself has no Fly app; only student repos deploy.
     if: ${{ !github.event.repository.private && !github.event.repository.is_template && github.ref == 'refs/heads/main' }}
     runs-on: ubuntu-latest
     timeout-minutes: 10
     permissions:
       contents: read
-    # Declaring the environment here is what registers the GitHub Deployment
-    # with the live URL — the same mechanism the Pages half gets from its
-    # deploy action. The app name is pinned to this repo's name at
-    # provisioning, so the URL needs no lookup.
+    # Registers the GitHub Deployment with the live URL. The app is named
+    # after this repo, so the URL needs no lookup.
     environment:
       name: fly
       url: https://${{ github.event.repository.name }}.fly.dev
@@ -86,13 +76,10 @@ jobs:
     steps:
       - uses: actions/checkout@v7
       - uses: pnpm/action-setup@v6 # for the pnpm dlx link check below
-      # Pinned like the scanner below: this runs in every repo in the course.
       - uses: superfly/flyctl-actions/setup-flyctl@fc53c09e1bc3be6f54706524e3b82c4f462f77be # 1.5
       - name: Deploy
-        # --remote-only builds the Dockerfile on Fly's builders (CI never runs
-        # Docker); --ha=false keeps the app at exactly one machine and one
-        # volume — a second machine would split the SQLite state and double
-        # the bill.
+        # --remote-only builds the Dockerfile on Fly's builders; --ha=false
+        # keeps the app at one machine and one volume.
         run: flyctl deploy --remote-only --ha=false -a ${{ github.event.repository.name }}
       - name: Verify the deployed site is online
         run: |
@@ -104,8 +91,7 @@ jobs:
           done
           echo "site did not return 200"; exit 1
       - name: Verify the live-update stream is streaming
-        # the SSE endpoint sends an opening comment immediately; no bytes
-        # within 15s means the live channel is broken
+        # the SSE endpoint sends an opening comment immediately
         run: |
           first=$(curl -sN -m 15 "$APP_URL/api/events" | head -c 12 || true)
           if [ -n "$first" ]; then
@@ -114,12 +100,8 @@ jobs:
             echo "no bytes from the SSE endpoint"; exit 1
           fi
       - name: Verify the deployed app knows it is serving https
-        # Behind Fly's TLS-terminating proxy an app can end up deciding it
-        # serves http://, which makes Astro's CSRF check reject the https
-        # Origin every browser sends — every form POST 403s in production
-        # while working perfectly on localhost. The check runs before
-        # routing, so this probes the origin itself and needs no route to
-        # exist: any status but 403 means the app has its own origin right.
+        # Behind Fly's proxy an app can decide it serves http and then 403
+        # every same-origin form POST. Any status but 403 means it's right.
         run: |
           code=$(curl -s -o /dev/null -w "%{http_code}" -X POST \
             -H "Origin: $APP_URL" \
@@ -134,9 +116,7 @@ jobs:
           fi
           echo "same-origin POST accepted (HTTP $code): the app knows its origin"
       - name: Verify CSRF protection is still on
-        # The tempting cure for the 403 above is security.checkOrigin: false,
-        # which "fixes" it by letting any site POST to your app. A foreign
-        # Origin must still be refused.
+        # A foreign Origin must still be refused.
         run: |
           code=$(curl -s -o /dev/null -w "%{http_code}" -X POST \
             -H "Origin: https://cross-site.example.com" \
@@ -152,9 +132,6 @@ jobs:
             exit 1
           fi
       - name: Check internal links on the live site
-        # Internal links only. linkinator checks outbound links by default, so
-        # someone else's rate limiter or outage would redden a deploy with
-        # nothing wrong in it. The skip is anchored to this app's own origin
-        # rather than naming localhost: the crawl root here is the live URL, and
-        # a pattern that matched it would pass having scanned zero links.
+        # Internal links only; the skip is anchored to this app's own origin
+        # so outbound links can't redden a deploy.
         run: pnpm dlx linkinator "$APP_URL" --recurse --silent --skip "^(?!$APP_URL)"
