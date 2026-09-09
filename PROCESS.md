@@ -16,7 +16,8 @@ cover every deliverable.
 
 ## What I built
 
-One paragraph: the thing, and the idea behind it.
+A sentence or two. `README.md` is where the account of what the app is and what
+good means here lives; this file is how you got there.
 
 ## How I got here
 

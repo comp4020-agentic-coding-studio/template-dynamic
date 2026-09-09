@@ -30,6 +30,14 @@ Two things to know about how they see your app:
   dependency-light but means rules needing real rendering — colour contrast,
   element overlap — are disabled. It's a floor, not a clean bill of health.
 
+## The README (shipped, always on)
+
+`readme.test.ts` holds one promise of the deployed app: `/readme/` serves the
+whole of `README.md`, your account of what the app is and what good looks like
+here. It renders the markdown to text and asks whether the served page contains
+all of it, so styling and navigation around it pass and a trimmed copy fails. A
+stack swap has to keep the route; this check is how you know it did.
+
 ## The starter's plumbing (shipped, retires with the starter)
 
 `guestbook.test.ts` drives the running app over HTTP to prove the supplied
