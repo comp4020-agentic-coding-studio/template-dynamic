@@ -1,6 +1,13 @@
 # Deploy config for the course-managed Fly.io setup. The machine, volume and
 # auto-stop settings are the shape the course watches — leave them as they are.
-# There's no `app` line: the app is named after this repo, and CI passes it.
+# There's no `app` line: the app is named after this repo, and the deploy
+# command passes it. While the repo is private you deploy by hand from here,
+# with the token the course sent you sitting in mise.local.toml:
+#
+#   flyctl deploy --remote-only --ha=false -a <this-repo-name>
+#
+# (remote build on Fly's builders; one machine, one volume). Once you ship the
+# repo public, CI runs the same command on every push to main.
 
 primary_region = "syd"
 
