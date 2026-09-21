@@ -3,7 +3,9 @@
 # The image Fly builds and runs: install, build, then keep only the built
 # server and its production dependencies.
 
-ARG NODE_VERSION=24
+# NODE_VERSION and PNPM_VERSION mirror mise.toml, which Docker cannot read:
+# bump them together
+ARG NODE_VERSION=24.21.0
 FROM node:${NODE_VERSION}-slim AS base
 
 LABEL fly_launch_runtime="Astro"
