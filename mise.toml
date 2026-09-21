@@ -1,6 +1,6 @@
 [tools]
 node = "24"
-pnpm = "11.9.0"
+pnpm = "latest"
 
 # Your Fly.io token goes in mise.local.toml (gitignored), not here:
 #   [env]
