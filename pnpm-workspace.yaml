@@ -9,3 +9,10 @@ allowBuilds:
 # just track package.json's ^0.9.10) --- bump it alongside that dependency.
 minimumReleaseAgeExclude:
   - '@astrojs/check@0.9.10'
+
+# drizzle-kit still drags in the deprecated @esbuild-kit/* loader chain, which
+# pins esbuild ~0.18.20 (GHSA-67mh-4wv8-2f99). It only ever calls
+# esbuild.transformSync, so pointing it at the 0.25 that drizzle-kit already
+# depends on directly both clears the advisory and drops a duplicate esbuild.
+overrides:
+  '@esbuild-kit/core-utils>esbuild': '^0.25.12'
