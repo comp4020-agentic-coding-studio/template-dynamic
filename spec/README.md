@@ -15,17 +15,18 @@ The checks in this directory come in three kinds:
 you build it and whatever the week's brief asks: a navigation landmark, exactly
 one top-level heading, a document language, a real title, a mobile viewport, alt
 text on images — plus an automated **accessibility floor**: axe-core's rule set,
-run on each page's served HTML. They run against the **running** app —
-`global-setup.ts` boots the built server (`dist/server/entry.mjs`, the same
-artefact production runs) with a throwaway database — so they check what
-actually ships. Keep them green; don't delete them.
+run on each page's served HTML. They run against the **running** app over HTTP,
+so they hold whatever it's built with. In CI that app is the image your
+`Dockerfile` builds, started with a throwaway `/data`, so what passes there is
+what deploys; a red run blocks the deploy. Locally, start the app however you
+run it and `pnpm check` finds it at `APP_URL` (default `http://localhost:8080`).
+Keep them green; don't delete them.
 
 Two things to know about how they see your app:
 
-- **They only visit the routes in `routes.ts`.** A server-rendered app has no
-  `dist/*.html` files to walk, so the covered routes are an explicit list. When
-  you add a page, add its route — otherwise the invariants silently stop
-  covering it.
+- **They only visit the routes in `routes.ts`.** A running app has no files for
+  them to walk, so the covered routes are an explicit list. When you add a page,
+  add its route — otherwise the invariants silently stop covering it.
 - **The axe pass runs without a browser** (in jsdom), which keeps CI fast and
   dependency-light but means rules needing real rendering — colour contrast,
   element overlap — are disabled. It's a floor, not a clean bill of health.
@@ -36,14 +37,8 @@ Two things to know about how they see your app:
 whole of `README.md`, your account of what the app is and what good looks like
 here. It renders the markdown to text and asks whether the served page contains
 all of it, so styling and navigation around it pass and a trimmed copy fails.
-
-## The starter's plumbing (shipped, retires with the starter)
-
-`guestbook.test.ts` drives the running app over HTTP to prove the supplied
-plumbing works in this repo: a message survives a reload, and a new one reaches
-other clients over the SSE stream. A red run on a fresh clone means the platform
-is broken, not your work. It describes the starter, so it goes when the starter
-does.
+The placeholder renders it at build time; whatever replaces the placeholder has
+to keep serving it.
 
 ## Your spec tests (yours to write)
 

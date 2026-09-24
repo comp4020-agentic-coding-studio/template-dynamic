@@ -14,5 +14,6 @@ produced live in `CLAUDE.md` and the checks that protect it live in `spec/`;
 this is the argument they came from, so say which parts of good are enforced and
 which are judgement calls.
 
-Images go in `public/` and are linked relatively --- `![alt](public/before.png)`
---- which renders on GitHub and at `/readme/` alike.
+Images are committed to the repo and linked relatively ---
+`![alt](docs/before.png)` --- so they render on GitHub; making them resolve at
+`/readme/` too is your app's job.

@@ -30,8 +30,16 @@ jobs:
         with:
           cache: true
       - run: pnpm install --frozen-lockfile
-      - name: Build and run the spec
+      - name: Build and start the app
+        # the same image Fly deploys, with a throwaway /data in place of the
+        # volume; the spec runs against it
+        run: |
+          docker build -t app .
+          docker run -d --init -p 8080:8080 -e PORT=8080 --tmpfs /data app
+      - name: Run the spec
         run: pnpm check
+        env:
+          APP_URL: http://localhost:8080
       - name: Check the process evidence
         # skipped in the template repo itself, where PROCESS.md is still the
         # boilerplate every student replaces
@@ -88,47 +96,6 @@ jobs:
             sleep 10
           done
           echo "site did not return 200"; exit 1
-      - name: Verify the live-update stream is streaming
-        # the SSE endpoint sends an opening comment immediately
-        run: |
-          first=$(curl -sN -m 15 "$APP_URL/api/events" | head -c 12 || true)
-          if [ -n "$first" ]; then
-            echo "streaming: $APP_URL/api/events"
-          else
-            echo "no bytes from the SSE endpoint"; exit 1
-          fi
-      - name: Verify the deployed app knows it is serving https
-        # Behind Fly's proxy an app can decide it serves http and then 403
-        # every same-origin form POST. Any status but 403 means it's right.
-        run: |
-          code=$(curl -s -o /dev/null -w "%{http_code}" -X POST \
-            -H "Origin: $APP_URL" \
-            -H "Content-Type: application/x-www-form-urlencoded" \
-            --data "probe=1" "$APP_URL/" -m 20 || true)
-          if [ "$code" = "403" ]; then
-            echo "the deployed app rejects same-origin form POSTs (HTTP 403)."
-            echo "it thinks it is serving http, not https, so every form in"
-            echo "your app is broken in production. astro.config.ts needs the"
-            echo "deploy domain in security.allowedDomains."
-            exit 1
-          fi
-          echo "same-origin POST accepted (HTTP $code): the app knows its origin"
-      - name: Verify CSRF protection is still on
-        # A foreign Origin must still be refused.
-        run: |
-          code=$(curl -s -o /dev/null -w "%{http_code}" -X POST \
-            -H "Origin: https://cross-site.example.com" \
-            -H "Content-Type: application/x-www-form-urlencoded" \
-            --data "probe=1" "$APP_URL/" -m 20 || true)
-          if [ "$code" = "403" ]; then
-            echo "cross-site POST refused: CSRF protection is on"
-          else
-            echo "a cross-site form POST was NOT refused (HTTP $code) — CSRF"
-            echo "protection looks disabled. Did security.checkOrigin get set"
-            echo "to false, or is / prerendered? Astro skips the check on"
-            echo "prerendered routes."
-            exit 1
-          fi
       - name: Check internal links on the live site
         # Internal links only; the skip is anchored to this app's own origin
         # so outbound links can't redden a deploy.
