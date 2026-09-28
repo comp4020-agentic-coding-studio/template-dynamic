@@ -1,5 +1,5 @@
 {
-  "name": "comp4020-dynamic-prototype",
+  "name": "comp4020-final",
   "private": true,
   "type": "module",
   "scripts": {
@@ -12,7 +12,6 @@
   "devDependencies": {
     "@types/jsdom": "^30.0.0",
     "@types/node": "^24.0.0",
-    "axe-core": "^4.13.0",
     "jsdom": "^30.1.0",
     "typescript": "^6.0.3",
     "vitest": "^5.0.1"

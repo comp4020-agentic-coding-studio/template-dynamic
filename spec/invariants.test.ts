@@ -1,89 +1,61 @@
-import axe from "axe-core";
 import { JSDOM } from "jsdom";
-import { beforeAll, describe, expect, inject, it } from "vitest";
-import { ROUTES } from "./routes";
+import { readFileSync } from "node:fs";
+import { expect, inject, it } from "vitest";
 
-// The invariants run against the RUNNING app — spec/global-setup.ts finds
-// it — and fetch each route over HTTP, so they check what actually ships,
-// whatever it's built with.
-//
-// These hold for any good website, whatever the week's brief asks — the
-// week-specific contracts live in your own spec/*.test.ts alongside this
-// file. The routes they cover come from spec/routes.ts; keep it current.
+// The two things the course relies on, checked against the RUNNING app
+// (spec/global-setup.ts finds it): it answers at /, and /readme/ publishes
+// README.md. Every other check in spec/ is yours.
 const baseUrl = inject("baseUrl");
 
-for (const route of ROUTES) {
-  describe(`invariants: ${route}`, () => {
-    let status: number;
-    let dom: JSDOM;
-    let doc: Document;
+it("answers at /", async () => {
+  const res = await fetch(new URL("/", baseUrl));
+  expect(res.status).toBe(200);
+});
 
-    beforeAll(async () => {
-      const res = await fetch(new URL(route, baseUrl));
-      status = res.status;
-      dom = new JSDOM(await res.text(), {
-        url: new URL(route, baseUrl).href,
-        runScripts: "outside-only",
-        pretendToBeVisual: true,
-      });
-      doc = dom.window.document;
-    });
+// Every renderer turns markdown into slightly different text, so rather than
+// render it here this checks the README's headings: each one has to appear on
+// the served page, in order. A missing page, or one left behind when README.md
+// changes, fails.
+const text = (html: string): string => new JSDOM(html).window.document.body.textContent ?? "";
 
-    it("responds 200", () => {
-      expect(status).toBe(200);
-    });
+// Link targets and inline HTML never show up as text once rendered, so they're
+// dropped from both sides (the placeholder's verbatim copy still carries them).
+// Then letters and digits only: renderers disagree about punctuation (smart
+// quotes, dashes, entities) and whitespace, and none of that is content.
+const normalise = (s: string): string =>
+  s
+    .replace(/\]\([^)]*\)/g, "]")
+    .replace(/<[^>]+>/g, "")
+    .toLowerCase()
+    .replace(/[^\p{L}\p{N}]+/gu, "");
 
-    it("declares its language", () => {
-      expect(doc.documentElement.getAttribute("lang")).toBeTruthy();
-    });
-
-    it("has a real title", () => {
-      expect(doc.title.trim()).not.toBe("");
-    });
-
-    it("has a mobile viewport", () => {
-      expect(doc.querySelector('meta[name="viewport"]')).toBeTruthy();
-    });
-
-    it("has a navigation landmark", () => {
-      expect(doc.querySelector("nav")).toBeTruthy();
-    });
-
-    it("has exactly one top-level heading", () => {
-      expect(doc.querySelectorAll("h1").length).toBe(1);
-    });
-
-    it("gives every image alt text", () => {
-      for (const img of doc.querySelectorAll("img")) {
-        expect(
-          img.hasAttribute("alt"),
-          `<img src="${img.getAttribute("src")}"> needs alt text`,
-        ).toBe(true);
-      }
-    });
-
-    it("has no axe violations", async () => {
-      // The accessibility floor: axe-core's full rule set, run inside jsdom
-      // so CI needs no browser. jsdom doesn't do layout, so the handful of
-      // rules that need rendered geometry or computed colour are disabled —
-      // checking those (axe in a real browser, or agent-browser against the
-      // live page) is yours to wire up when the spec asks for it.
-      const window = dom.window as unknown as {
-        eval: (source: string) => void;
-        axe: typeof axe;
-      };
-      window.eval(axe.source);
-      const results = await window.axe.run(doc, {
-        rules: {
-          "color-contrast": { enabled: false },
-          "link-in-text-block": { enabled: false },
-        },
-      });
-      const violations = results.violations.map(
-        ({ id, help, nodes }) =>
-          `${id}: ${help} (${nodes.map((node) => node.target.join(" ")).join("; ")})`,
-      );
-      expect(violations).toEqual([]);
-    });
-  });
+// ATX headings (`## Like this`) outside fenced code.
+function headings(md: string): string[] {
+  const found: string[] = [];
+  let fenced = false;
+  for (const line of md.split(/\r?\n/)) {
+    if (/^ {0,3}(```|~~~)/.test(line)) fenced = !fenced;
+    const heading = !fenced && line.match(/^ {0,3}#{1,6}\s+(.*?)(\s+#+)?\s*$/);
+    if (heading) found.push(heading[1]);
+  }
+  return found;
 }
+
+it("publishes README.md at /readme/", async () => {
+  const expected = headings(readFileSync("README.md", "utf8"));
+  expect(expected, "README.md has no headings to check /readme/ against").not.toEqual([]);
+
+  const res = await fetch(new URL("/readme/", baseUrl));
+  expect(res.status).toBe(200);
+  const served = normalise(text(await res.text()));
+
+  let from = 0;
+  for (const heading of expected) {
+    const at = served.indexOf(normalise(heading), from);
+    expect(
+      at,
+      `/readme/ is missing the README heading "${heading}" (or has it out of order)`,
+    ).not.toBe(-1);
+    from = at + normalise(heading).length;
+  }
+});
