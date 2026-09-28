@@ -9,7 +9,8 @@ declare module "vitest" {
 // The spec checks a RUNNING app over HTTP, so it holds whatever the app is
 // built with. CI builds the Dockerfile, starts the image and points APP_URL
 // at it, so what passes there is what deploys. Locally, start your app however
-// you run it, then `pnpm check`; APP_URL says where it's listening.
+// you run it, then `pnpm check`; APP_URL says where it's listening. It waits
+// up to a minute, since some stacks take a while to boot or migrate.
 export default async function setup(project: TestProject): Promise<void> {
   const baseUrl = process.env.APP_URL ?? "http://localhost:8080";
 
@@ -20,7 +21,7 @@ export default async function setup(project: TestProject): Promise<void> {
     } catch {
       // not up yet
     }
-    if (attempt >= 50) {
+    if (attempt >= 300) {
       throw new Error(
         `nothing is answering at ${baseUrl}: start your app first, or set APP_URL to where it's listening`,
       );
