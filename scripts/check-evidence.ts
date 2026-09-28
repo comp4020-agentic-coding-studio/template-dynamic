@@ -1,9 +1,10 @@
 #!/usr/bin/env node
-// Checks the process evidence the final project carries: CLAUDE.md, a crit
-// reflection under a name the cutoff sweep reads, and PROCESS.md with its
-// template comment gone and every cited commit resolving in this repo (a
-// citation is a markdown link whose text is an abbreviated SHA or a sha...sha
-// range).
+// Checks what would otherwise be silently wrong in the process evidence:
+// CLAUDE.md missing, no crit reflection under a name the cutoff sweep reads,
+// PROCESS.md still carrying its template comment, or a cited commit that
+// doesn't exist in this repo (a citation is a markdown link whose text is an
+// abbreviated SHA or a sha...sha range). How the account is told, and how much
+// it cites, is the marker's to judge.
 import { execFileSync } from "node:child_process";
 import { existsSync, readdirSync, readFileSync } from "node:fs";
 
@@ -49,10 +50,6 @@ for (const match of src.matchAll(/\[`?([0-9a-f]{7,40}(?:\.\.\.[0-9a-f]{7,40})?)`
   for (const sha of match[1].split("...")) shas.add(sha);
 }
 
-if (shas.size === 0) {
-  fail("no commit citations found — cite the record as [`<sha>`](<commit or compare URL>)");
-}
-
 for (const sha of shas) {
   try {
     execFileSync("git", ["cat-file", "-e", `${sha}^{commit}`], { stdio: "ignore" });
@@ -62,4 +59,8 @@ for (const sha of shas) {
 }
 
 if (failed) process.exit(1);
-console.log(`✓ PROCESS.md: ${shas.size} cited commit(s) all resolve`);
+console.log(
+  shas.size > 0
+    ? `✓ PROCESS.md: ${shas.size} cited commit(s), all resolve`
+    : "✓ PROCESS.md: no commit links to check",
+);
