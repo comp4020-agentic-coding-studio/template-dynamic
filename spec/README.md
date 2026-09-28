@@ -22,7 +22,7 @@ what deploys; a red run blocks the deploy. Locally, start the app however you
 run it and `pnpm check` finds it at `APP_URL` (default `http://localhost:8080`).
 Keep them green; don't delete them.
 
-Two things to know about how they see your app:
+Three things to know about how they see your app:
 
 - **They only visit the routes in `routes.ts`.** A running app has no files for
   them to walk, so the covered routes are an explicit list. When you add a page,
@@ -30,6 +30,11 @@ Two things to know about how they see your app:
 - **The axe pass runs without a browser** (in jsdom), which keeps CI fast and
   dependency-light but means rules needing real rendering — colour contrast,
   element overlap — are disabled. It's a floor, not a clean bill of health.
+- **They read the HTML your server sends, before any script runs.** Nothing
+  in the page is executed, so every route has to arrive with its navigation
+  and its one top-level heading already in the HTML. A page that builds itself
+  in the browser can still do that, by serving that outline and filling in the
+  rest.
 
 ## The README (shipped, always on)
 
@@ -38,7 +43,8 @@ Two things to know about how they see your app:
 Markdown renderers all differ slightly, so it checks the README's headings
 rather than every word: each one has to appear on the served page, in order. The
 placeholder serves the file verbatim; render it however your stack renders
-markdown, and keep it in full --- the marker reads it there.
+markdown, as long as the headings are in the HTML the server sends, and keep it
+in full --- the marker reads it there.
 
 ## Your spec tests (yours to write)
 

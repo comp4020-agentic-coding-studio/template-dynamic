@@ -1,7 +1,8 @@
 import { defineConfig } from "vitest/config";
 
 // The spec needs a running app (spec/global-setup.ts finds it); the scripts'
-// own tests don't, so they run without one.
+// own tests don't, so they run without one. Only these two directories run: a
+// test anywhere else needs a project of its own here.
 export default defineConfig({
   test: {
     projects: [
