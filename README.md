@@ -1,4 +1,4 @@
-# Your prototype
+# Your app
 
 <!-- TEMPLATE: this file is yours, and the deployed app publishes it in full at
      /readme/ --- a visitor reads it before they touch the app, and so does the
