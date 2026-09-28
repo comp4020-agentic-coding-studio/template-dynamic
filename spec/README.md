@@ -33,12 +33,12 @@ Two things to know about how they see your app:
 
 ## The README (shipped, always on)
 
-`readme.test.ts` holds one promise of the deployed app: `/readme/` serves the
-whole of `README.md`, your account of what the app is and what good looks like
-here. It renders the markdown to text and asks whether the served page contains
-all of it, so styling and navigation around it pass and a trimmed copy fails.
-The placeholder renders it at build time; whatever replaces the placeholder has
-to keep serving it.
+`readme.test.ts` holds one promise of the deployed app: `/readme/` publishes
+`README.md`, your account of what the app is and what good looks like here.
+Markdown renderers all differ slightly, so it checks the README's headings
+rather than every word: each one has to appear on the served page, in order. The
+placeholder serves the file verbatim; render it however your stack renders
+markdown, and keep it in full --- the marker reads it there.
 
 ## Your spec tests (yours to write)
 
