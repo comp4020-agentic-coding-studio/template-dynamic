@@ -54,7 +54,7 @@ file alongside the supplied ones (any `spec/*.test.ts` runs with `pnpm check`).
 Some lines only a person can judge; leave those to the crit. There is no minimum
 count: select the checks that protect your work's real promises, and test the
 **contracts** — what the page must do, not how you built it — so the tests
-survive a change of approach.
+survive a change of approach, or of stack.
 
 A green suite here is backpressure, not a mark: your tutor verifies what you
 deployed against the published spec at the crit, and keeping your own tests
