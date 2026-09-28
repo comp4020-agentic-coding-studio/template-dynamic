@@ -35,11 +35,15 @@ jobs:
         # volume; the spec runs against it
         run: |
           docker build -t app .
-          docker run -d --init -p 8080:8080 -e PORT=8080 --tmpfs /data app
+          docker run -d --init --name app -p 8080:8080 -e PORT=8080 --tmpfs /data app
       - name: Run the spec
         run: pnpm check
         env:
           APP_URL: http://localhost:8080
+      - name: Show the app's output
+        # what the container printed, so a crash or slow boot is visible
+        if: ${{ failure() }}
+        run: docker logs app
       - name: Check the process evidence
         # skipped in the template repo itself, where PROCESS.md is still the
         # boilerplate every student replaces
