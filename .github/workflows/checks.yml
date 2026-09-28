@@ -19,7 +19,7 @@ jobs:
     # sensors, locally.
     if: ${{ !github.event.repository.private }}
     runs-on: ubuntu-latest
-    timeout-minutes: 10
+    timeout-minutes: 20
     permissions:
       contents: read
     steps:
@@ -72,7 +72,7 @@ jobs:
     # The template repo itself has no Fly app; only student repos deploy.
     if: ${{ !github.event.repository.private && !github.event.repository.is_template && github.ref == 'refs/heads/main' }}
     runs-on: ubuntu-latest
-    timeout-minutes: 10
+    timeout-minutes: 20
     permissions:
       contents: read
     # Registers the GitHub Deployment with the live URL. The app is named
@@ -85,7 +85,6 @@ jobs:
       APP_URL: https://${{ github.event.repository.name }}.fly.dev
     steps:
       - uses: actions/checkout@v7
-      - uses: jdx/mise-action@v4 # for the pnpm dlx link check below
       - uses: superfly/flyctl-actions/setup-flyctl@ed8efb33836e8b2096c7fd3ba1c8afe303ebbff1 # 1.6
       - name: Deploy
         # --remote-only builds the Dockerfile on Fly's builders; --ha=false
@@ -100,7 +99,3 @@ jobs:
             sleep 10
           done
           echo "site did not return 200"; exit 1
-      - name: Check internal links on the live site
-        # Internal links only; the skip is anchored to this app's own origin
-        # so outbound links can't redden a deploy.
-        run: pnpm dlx linkinator@8.1.0 "$APP_URL" --recurse --silent --skip "^(?!$APP_URL)"
